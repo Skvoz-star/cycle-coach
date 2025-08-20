@@ -50,7 +50,7 @@
   .controls{display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:end}
     label{font-size:14px;color:var(--muted);width: auto;display: block;margin-bottom: 10px;}
   input[type="number"]{
-    width:100%; padding:12px 14px; font-size:16px; color:var(--text);
+       text-align: center; padding:12px 14px; font-size:16px; color:var(--text);
     background:var(--chip); border:1px solid var(--border); border-radius:12px; outline:none;
   }
   input[type="number"]::-webkit-outer-spin-button,
@@ -114,27 +114,21 @@
     <section class="card">
       <div class="controls">
         <div>
-          <label for="day">День цикла (1–28)</label><form>
-          <input id="day" type="number" min="1" max="28" value="1" /></form><div class="flex items-center space-x-3 justify-center my-4">
+          <label for="day">День цикла (1–28)</label>
+         
+<div class="flex items-center space-x-3 justify-center my-4">
   <!-- Кнопка минус -->
   <button id="minusDay" 
-    class="w-12 h-12 flex items-center justify-center rounded-full bg-pink-500 text-white text-2xl shadow-md hover:bg-pink-600 active:scale-90 transition">
+    class="btn">
     −
   </button>
 
   <!-- Поле ввода -->
-  <input 
-    type="number" 
-    id="dayInput" 
-    value="1" 
-    min="1" 
-    max="28" 
-    class="w-20 h-12 text-center text-xl font-semibold border-2 border-pink-300 rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-pink-400"
-  >
+   <input id="day" type="number" min="1" max="28" value="1" />
 
   <!-- Кнопка плюс -->
   <button id="plusDay" 
-    class="w-12 h-12 flex items-center justify-center rounded-full bg-pink-500 text-white text-2xl shadow-md hover:bg-pink-600 active:scale-90 transition">
+    class="btn">
     +
   </button>
 </div>
@@ -434,7 +428,7 @@ const day=document.getElementById("day"),metrics=document.getElementById("metric
 
 </script>
   <script>
-  const input = document.getElementById("dayInput");
+  const input = document.getElementById("day");
   const plusBtn = document.getElementById("plusDay");
   const minusBtn = document.getElementById("minusDay");
 
@@ -445,6 +439,7 @@ const day=document.getElementById("day"),metrics=document.getElementById("metric
     } else {
       input.value = 1; // зацикливаем цикл
     }
+return false;
   });
 
   minusBtn.addEventListener("click", () => {
@@ -453,12 +448,11 @@ const day=document.getElementById("day"),metrics=document.getElementById("metric
       input.value = val - 1;
     } else {
       input.value = 28; // зацикливаем назад
-    }
+    } return false;
   });
 </script>
 </body>
 </html>
-
 
 
 
