@@ -115,7 +115,29 @@
       <div class="controls">
         <div>
           <label for="day">День цикла (1–28)</label><form>
-          <input id="day" type="number" min="1" max="28" value="1" /></form>
+          <input id="day" type="number" min="1" max="28" value="1" /></form><div class="flex items-center space-x-3 justify-center my-4">
+  <!-- Кнопка минус -->
+  <button id="minusDay" 
+    class="w-12 h-12 flex items-center justify-center rounded-full bg-pink-500 text-white text-2xl shadow-md hover:bg-pink-600 active:scale-90 transition">
+    −
+  </button>
+
+  <!-- Поле ввода -->
+  <input 
+    type="number" 
+    id="dayInput" 
+    value="1" 
+    min="1" 
+    max="28" 
+    class="w-20 h-12 text-center text-xl font-semibold border-2 border-pink-300 rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-pink-400"
+  >
+
+  <!-- Кнопка плюс -->
+  <button id="plusDay" 
+    class="w-12 h-12 flex items-center justify-center rounded-full bg-pink-500 text-white text-2xl shadow-md hover:bg-pink-600 active:scale-90 transition">
+    +
+  </button>
+</div>
         </div>
         <div class="row">
           <button id="apply" class="btn">Показать шпаргалку</button>
@@ -411,8 +433,32 @@ renderDay(1);
 const day=document.getElementById("day"),metrics=document.getElementById("metrics"),phaseEl=document.getElementById("phase"),vibe=document.getElementById("vibe"),advice=document.getElementById("advice"),action=document.getElementById("action");
 
 </script>
+  <script>
+  const input = document.getElementById("dayInput");
+  const plusBtn = document.getElementById("plusDay");
+  const minusBtn = document.getElementById("minusDay");
+
+  plusBtn.addEventListener("click", () => {
+    let val = parseInt(input.value) || 1;
+    if (val < 28) {
+      input.value = val + 1;
+    } else {
+      input.value = 1; // зацикливаем цикл
+    }
+  });
+
+  minusBtn.addEventListener("click", () => {
+    let val = parseInt(input.value) || 1;
+    if (val > 1) {
+      input.value = val - 1;
+    } else {
+      input.value = 28; // зацикливаем назад
+    }
+  });
+</script>
 </body>
 </html>
+
 
 
 
