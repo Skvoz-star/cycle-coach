@@ -58,7 +58,7 @@
   .btn{
     padding:12px 16px; border-radius:12px; border:1px solid var(--border);
     background:linear-gradient(180deg, rgba(110,168,255,.25), rgba(110,168,255,.1));
-    color:var(--text); font-weight:600; cursor:pointer; transition: .15s transform ease, .15s opacity ease;
+    color:var(--text); font-weight:600; cursor:pointer; transition: .15s transform ease, .15s opacity ease; margin: 10px auto;
   }
   .btn:hover{transform: translateY(-1px)}
   .btn.secondary{background:var(--chip)}
@@ -116,7 +116,7 @@
         <div>
           <label for="day">День цикла (1–28)</label>
          
-<div class="flex items-center space-x-3 justify-center my-4">
+<div class="">
   <!-- Кнопка минус -->
   <button id="minusDay" 
     class="btn">
@@ -131,11 +131,12 @@
     class="btn">
     +
   </button>
+<button id="apply" class="btn">Показать шпаргалку</button>
+          <button id="shuffle" class="btn secondary" title="Обновить только конкретное действие">Ещё идея</button>
 </div>
         </div>
         <div class="row">
-          <button id="apply" class="btn">Показать шпаргалку</button>
-          <button id="shuffle" class="btn secondary" title="Обновить только конкретное действие">Ещё идея</button>
+          
         </div>
       </div>
     </section>
