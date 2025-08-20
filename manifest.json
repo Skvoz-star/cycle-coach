@@ -1,0 +1,15 @@
+{
+  "name": "Cycle Coach",
+  "short_name": "Cycle",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff69b4",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
