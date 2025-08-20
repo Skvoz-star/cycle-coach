@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cycle Coach — шпаргалка поведения по дням цикла</title>
+<style>
+  :root{
+    --bg:#0f1220;--card:#161a2b;--muted:#8b91a7;--text:#e8ebff;
+    --accent:#6ea8ff;--good:#6ef3a5;--warn:#ffd36e;--love:#ff7aa2;
+    --chip:#1e243c;--border:#2a3150;--shadow: 0 10px 30px rgba(0,0,0,.35);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 10% -10%, #1b2050 0, transparent 60%),
+                radial-gradient(800px 500px at 110% 10%, #2a1d4f 0, transparent 60%),
+                var(--bg);
+    color:var(--text);
+    display:flex; align-items:stretch; justify-content:center; padding:24px;
+  }
+  .app{max-width:980px; width:100%}
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px;
+  }
+  .brand{display:flex; align-items:center; gap:14px}
+  .logo{width:42px; height:42px; border-radius:10px; background:linear-gradient(135deg, #6ea8ff, #a28cff 60%, #ff7aa2);
+        box-shadow: var(--shadow)}
+  h1{font-size: clamp(20px, 2vw, 26px); margin:0}
+  .sub{color:var(--muted); font-size:14px}
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,.02), transparent 60%), var(--card);
+    border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding:18px; margin-bottom:18px;
+  }
+  .controls{display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:end}
+  label{font-size:14px; color:var(--muted)}
+  input[type="number"]{
+    width:100%; padding:12px 14px; font-size:16px; color:var(--text);
+    background:var(--chip); border:1px solid var(--border); border-radius:12px; outline:none;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0;}
+  .btn{
+    padding:12px 16px; border-radius:12px; border:1px solid var(--border);
+    background:linear-gradient(180deg, rgba(110,168,255,.25), rgba(110,168,255,.1));
+    color:var(--text); font-weight:600; cursor:pointer; transition: .15s transform ease, .15s opacity ease;
+  }
+  .btn:hover{transform: translateY(-1px)}
+  .btn.secondary{background:var(--chip)}
+  .grid{
+    display:grid; gap:12px;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .metric{
+    background:var(--chip); border:1px solid var(--border); border-radius:14px; padding:12px;
+  }
+  .metric h3{margin:0 0 8px; font-size:14px; color:#b9c1dd; display:flex; justify-content:space-between; gap:8px}
+  .score{font-variant-numeric: tabular-nums; font-weight:700}
+  .bars{display:flex; gap:6px}
+  .bar{height:12px; flex:1; border-radius:6px; background:#202844; border:1px solid #283155}
+  .bar.on{background: linear-gradient(180deg, rgba(110,168,255,.9), rgba(110,168,255,.55)); border-color:#6ea8ff}
+  .bar.on.good{background: linear-gradient(180deg, rgba(110,243,165,.9), rgba(110,243,165,.55)); border-color:#6ef3a5}
+  .bar.on.warn{background: linear-gradient(180deg, rgba(255,211,110,.9), rgba(255,211,110,.55)); border-color:#ffd36e}
+  .bar.on.love{background: linear-gradient(180deg, rgba(255,122,162,.9), rgba(255,122,162,.55)); border-color:#ff7aa2}
+  .row{display:flex; gap:12px; flex-wrap:wrap}
+  .chip{
+    background:var(--chip); border:1px solid var(--border); border-radius:999px;
+    padding:8px 12px; color:#b9c1dd; font-size:13px
+  }
+  .advice{
+    display:grid; gap:14px; grid-template-columns: 1.2fr .8fr;
+  }
+  .advice .text{font-size:16px; line-height:1.55}
+  .action{
+    background: linear-gradient(180deg, rgba(255,122,162,.18), rgba(255,122,162,.08));
+    border:1px solid #3a2a3a; border-radius:14px; padding:14px
+  }
+  .action h4{margin:0 0 8px}
+  .action p{margin:0; color:#ffd6e3}
+  .actions-row{display:flex; gap:10px; margin-top:10px}
+  .tagline{color:#aeb6d5; font-size:13px}
+  footer{margin-top:12px; color:var(--muted); font-size:12px; text-align:center}
+  @media (max-width:840px){ .grid{grid-template-columns: repeat(2, 1fr)} .advice{grid-template-columns: 1fr} }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Cycle Coach</h1>
+          <div class="sub">Шпаргалка поведения под 28-дневный цикл</div>
+        </div>
+      </div>
+      <div class="tagline">«Правильный день — правильный вайб»</div>
+    </header>
+
+    <section class="card">
+      <div class="controls">
+        <div>
+          <label for="day">День цикла (1–28)</label>
+          <input id="day" type="number" min="1" max="28" value="1" />
+        </div>
+        <div class="row">
+          <button id="apply" class="btn">Показать шпаргалку</button>
+          <button id="shuffle" class="btn secondary" title="Обновить только конкретное действие">Ещё идея</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="output" class="card" hidden>
+      <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:6px">
+        <div class="chip" id="phaseChip">Фаза</div>
+        <div class="chip" id="vibeChip">Вайб дня</div>
+      </div>
+
+      <div class="grid" id="metricsGrid"></div>
+
+      <div class="advice" style="margin-top:10px">
+        <div class="text" id="adviceText"></div>
+        <div class="action">
+          <h4 style="display:flex;align-items:center;gap:8px; margin:0 0 6px">
+            🎯 Конкретное действие на сегодня
+          </h4>
+          <p id="actionText"></p>
+          <div class="actions-row">
+            <button id="another" class="btn secondary" style="padding:8px 12px">Другое</button>
+            <button id="lock" class="btn secondary" style="padding:8px 12px">Зафиксировать</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>Данные и рекомендации — ориентиры, а не приговор. Всегда слушай её сигналы и согласие.</footer>
+  </div>
+
+<script>
+/* ====== ДАННЫЕ: оценки по дням (1–5) ====== */
+const table = {
+  // day: [Говорить, Забота, Объятия, Страсть, Инициатива, Юмор]
+  1:[3,5,3,1,1,1], 2:[3,5,3,1,1,2], 3:[3,4,3,2,2,3], 4:[3,4,4,2,2,3], 5:[4,4,4,3,3,3],
+  6:[5,3,3,3,3,4], 7:[5,3,3,3,3,4], 8:[5,3,5,3,5,5], 9:[5,3,5,4,5,5], 10:[5,3,5,4,5,5], 11:[5,3,5,4,5,5],
+  12:[4,3,5,5,5,5], 13:[4,3,5,5,5,5],
+  14:[4,3,5,5,5,4], 15:[3,3,5,5,5,3], 16:[3,3,5,5,5,3],
+  17:[3,4,4,3,2,3], 18:[3,4,4,3,2,3], 19:[3,4,4,3,2,3], 20:[3,4,4,3,2,3],
+  21:[2,5,4,2,2,2], 22:[2,5,4,2,2,2], 23:[2,5,4,2,2,2], 24:[2,4,5,2,2,2],
+  25:[1,4,5,1,1,1], 26:[1,4,5,1,1,1], 27:[1,4,5,1,1,1], 28:[1,4,5,1,1,1]
+};
+
+const metricNames = ["Говорить","Забота","Объятия","Страсть","Инициатива","Юмор"];
+const metricHints = {
+  "Говорить":"Количество разговоров, вовлечённость в диалог",
+  "Забота":"Практическая забота, помощь, внимание к комфорту",
+  "Объятия":"Телесная нежность и контакт",
+  "Страсть":"Флирт/сексуальный тон",
+  "Инициатива":"Ведение планов, решения, драйв",
+  "Юмор":"Игривость, лёгкость, шутки"
+};
+
+/* ====== ФАЗЫ И ВАЙБ ====== */
+function phaseForDay(d){
+  if (d>=1 && d<=5) return ["Менструальная", "больше мягкости и уюта"];
+  if (d>=6 && d<=13) return ["Фолликулярная", "энергия и новизна"];
+  if (d>=14 && d<=16) return ["Овуляция", "максимум страсти и уверенности"];
+  return ["Лютеиновая", d>=25 ? "ПМС: бережность и терпение" : "домашний уют и стабильность"];
+}
+
+/* ====== ТЕКСТ СОВЕТА ПО ДНЮ ====== */
+function adviceFor(day, scores){
+  const [talk, care, hug, passion, init, humor] = scores;
+  const parts = [];
+
+  // Лид-строка
+  const [ph, vibe] = phaseForDay(day);
+  parts.push(`<b>${ph}</b>: ${vibe}.`);
+
+  // Микро-советы по высоким/низким метрикам
+  if (care>=4) parts.push("Сделай упор на <b>практическую заботу</b> — сними бытовую мелочь, предложи комфорт.");
+  if (hug>=4) parts.push("Больше <b>объятий и нежности</b> — спроси про телесные границы и предпочтения.");
+  if (passion>=4) parts.push("Дай понять про <b>желание</b>: взгляд, прикосновения, комплимент, уверенная инициатива.");
+  if (init>=4) parts.push("Возьми <b>инициативу</b> — предложи план без перегруза деталями.");
+  if (talk>=4) parts.push("Больше <b>живого разговора</b>: интересуйся её идеями, задавай открытые вопросы.");
+  if (humor>=4) parts.push("Добавь <b>лёгкости и юмора</b>, но без колкостей.");
+
+  // Если низкие
+  if (passion<=2 && (ph==="Менструальная" || ph==="Лютеиновая")) {
+    parts.push("Страсть убери на задний план — <b>комфорт важнее</b>.");
+  }
+  if (talk<=2) parts.push("Не переговаривай — <b>короче и теплее</b>.");
+
+  // Финиш
+  parts.push("Главное: <b>согласие и обратная связь</b> — спроси, что ей сейчас правда нужно.");
+  return parts.join(" ");
+}
+
+/* ====== ПУЛ ДЕЙСТВИЙ (перемешивается и выдаётся без повторов) ====== */
+const actionsPoolBase = {
+  common: [
+    "Спроси «что тебя сейчас поддержит?» и сделай это",
+    "Сделай её любимый напиток дома",
+    "Небольшая записка с тёплой мыслью в неожиданном месте",
+    "Искренний голосовой комплимент на 20–30 секунд",
+    "Организуй тихую прогулку в приятном месте",
+    "Поставь таймер на 10 минут и просто слушай её без советов",
+    "Собери плейлист «наш сегодняшний вайб»",
+    "Подхвати один бытовой пункт без напоминаний",
+    "Небольшой сюрприз-лакомство к чаю",
+    "Предложи вместе посмотреть 1 серию чего-то лёгкого"
+  ],
+  care: [
+    "Подогрей плед, закажи/приготовь суп или тёплый чай",
+    "Возьми на себя мусор/посуду/стирку сегодня",
+    "Подготовь тёплую ванну/душ, поставь полотенце и пижаму",
+    "Собери «комфорт-бокс»: вода, вкусняшка, грелка",
+    "Сделай мини-релакс: аромадиффузор, приглушённый свет"
+  ],
+  tenderness: [
+    "Спросить «можно обниму?» и просто обнять 60–90 секунд",
+    "Массаж шеи и плеч 5–7 минут",
+    "Погладить по спине/волосам, если ей это ок",
+    "Держаться за руки во время прогулки",
+    "Сесть рядом и смотреть фильм под пледом"
+  ],
+  passion: [
+    "Прямой комплимент внешности + уверенный взгляд",
+    "Лёгкий флирт-сообщение днём и предложение вечера",
+    "Поцелуй чуть дольше обычного и «я хочу тебя»",
+    "Запланируй свидание: ужин дома и музыка",
+    "Предложи совместный душ/ванну (если ей комфортно)"
+  ],
+  initiative: [
+    "Предложи конкретный план на вечер (в 1–2 шага)",
+    "Купи билеты/забронируй стол без долгих обсуждений",
+    "Составь мини-лист дел и закрой 1–2 задачи",
+    "Предложи новую локацию: кафе/парк/маршрут",
+    "Организуй настольную игру/небольшой квест дома"
+  ],
+  humor: [
+    "Лёгкая внутренняя шутка, понятная только вам двоим",
+    "Подборка смешных коротких видео на 5 минут",
+    "Мини-игра: «угадай факт» про вас двоих",
+    "Забавный стикер/мем с подписью-комплиментом",
+    "Сыграйте «да/нет» на смешные вопросы"
+  ],
+  gifts: [
+    "Купить цветы (скромный букет по её вкусу)",
+    "Принести её любимый десерт/фрукт",
+    "Маленькая полезная штука, о которой она упоминала",
+    "Милый магнит/наклейка/брелок с вашим «инсайдом»",
+    "Открытка с одной тёплой фразой от тебя"
+  ]
+};
+
+/* ====== ХРАНЕНИЕ И НЕПОВТОРЕНИЕ ====== */
+function shuffle(arr){ return arr.map(v=>[v,Math.random()]).sort((a,b)=>a[1]-b[1]).map(([v])=>v); }
+
+function getActionQueueKey(day){ return `cc_queue_day_${day}`; }
+function loadQueue(day){
+  const key = getActionQueueKey(day);
+  const str = localStorage.getItem(key);
+  if(!str) return [];
+  try{ return JSON.parse(str); }catch{ return []; }
+
+}
+function saveQueue(day, queue){
+  localStorage.setItem(getActionQueueKey(day), JSON.stringify(queue));
+
+}
+function buildActionPoolFor(scores){
+  const [talk, care, hug, passion, init, humor] = scores;
+  let pool = [...actionsPoolBase.common];
+  if (care>=4) pool = pool.concat(actionsPoolBase.care);
+  if (hug>=4) pool = pool.concat(actionsPoolBase.tenderness);
+  if (passion>=4) pool = pool.concat(actionsPoolBase.passion);
+  if (init>=4) pool = pool.concat(actionsPoolBase.initiative);
+  if (humor>=4) pool = pool.concat(actionsPoolBase.humor);
+  // Время от времени добавляем подарки: при страсти или лютеин/ПМС это заходит мягко
+  if (passion>=4 || care>=4) pool = pool.concat(actionsPoolBase.gifts);
+  // Удалим дубликаты
+  pool = Array.from(new Set(pool));
+  return pool;
+}
+function nextAction(day, scores, lock=false){
+  let queue = loadQueue(day);
+  // если очередь пуста или не соответствует текущему пулу — строим заново
+  const pool = buildActionPoolFor(scores);
+  if (!queue.length || !queue.every(a=>pool.includes(a))){
+    queue = shuffle(pool);
+  }
+  const action = queue.shift();
+  if (lock) {
+    // Если зафиксировали — не возвращаем в очередь
+    saveQueue(day, queue);
+  } else {
+    // Поместим действие в конец, чтобы не повторялось часто
+    queue.push(action);
+    saveQueue(day, queue);
+  }
+  return action;
+}
+
+/* ====== UI ОТРИСОВКА ====== */
+const grid = document.getElementById('metricsGrid');
+const output = document.getElementById('output');
+const phaseChip = document.getElementById('phaseChip');
+const vibeChip  = document.getElementById('vibeChip');
+const adviceText = document.getElementById('adviceText');
+const actionText = document.getElementById('actionText');
+
+function renderBars(score, tone){
+  const wrap = document.createElement('div'); wrap.className='bars';
+  for(let i=1;i<=5;i++){
+    const b = document.createElement('div'); b.className='bar';
+    if (i<=score){ b.classList.add('on'); if(tone) b.classList.add(tone); }
+    wrap.appendChild(b);
+  }
+  return wrap;
+}
+function toneForMetric(name){
+  if (name==="Страсть") return 'love';
+  if (name==="Забота") return 'good';
+  if (name==="Юмор") return 'warn';
+  return '';
+}
+function renderDay(day){
+  const d = Number(day);
+  if (!(d>=1 && d<=28)) return;
+  const scores = table[d];
+  grid.innerHTML = '';
+  metricNames.forEach((name, idx)=>{
+    const m = document.createElement('div'); m.className='metric';
+    const h = document.createElement('h3');
+    const hint = metricHints[name] || '';
+    h.innerHTML = `<span title="${hint}">${name}</span> <span class="score" aria-label="оценка">${scores[idx]}/5</span>`;
+    m.appendChild(h);
+    m.appendChild(renderBars(scores[idx], toneForMetric(name)));
+    grid.appendChild(m);
+
+  localStorage.setItem("cycleDay",d);
+  localStorage.setItem("savedAt",Date.now());
+
+  });
+
+  const [phase, vibe] = phaseForDay(d);
+  phaseChip.textContent = `Фаза: ${phase}`;
+  vibeChip.textContent  = `Вайб: ${vibe}`;
+
+  adviceText.innerHTML = adviceFor(d, scores);
+  actionText.textContent = nextAction(d, scores, true); // зафиксируем первую рекомендацию
+  output.hidden = false;
+}
+
+/* ====== СВЯЗКА КНОПОК ====== */
+document.getElementById('apply').addEventListener('click', ()=>{
+  const day = document.getElementById('day').value;
+  renderDay(day);
+});
+document.getElementById('shuffle').addEventListener('click', ()=>{
+  // Обновим только действие, не меняя остального
+  const day = Number(document.getElementById('day').value);
+  if (!(day>=1 && day<=28)) return;
+  actionText.textContent = nextAction(day, table[day]);
+});
+document.getElementById('another').addEventListener('click', ()=>{
+  const day = Number(document.getElementById('day').value);
+  actionText.textContent = nextAction(day, table[day]);
+});
+document.getElementById('lock').addEventListener('click', ()=>{
+  // Зафиксировать = обновить очередь (сдвинули уже при показе), ничего не делаем дополнительно
+  const btn = document.getElementById('lock');
+  btn.textContent = 'Зафиксировано ✅';
+  setTimeout(()=> btn.textContent = 'Зафиксировать', 1200);
+});
+
+
+
+
+// восстановление дня
+window.onload=()=>{
+  if(localStorage.getItem("dark")==="true") document.body.classList.add("dark");
+  const saved=localStorage.getItem("cycleDay"), at=localStorage.getItem("savedAt");
+  if(saved&&at){
+    const daysPassed=Math.floor((Date.now()-at)/(1000*60*60*24));
+    let newDay=(+saved+daysPassed)%28; if(newDay===0)newDay=28;
+    day.value=newDay; 
+// авто-рендер дня 1 при первом открытии
+renderDay(newDay);
+  } else {
+// авто-рендер дня 1 при первом открытии
+renderDay(1);
+}
+
+};
+
+const day=document.getElementById("day"),metrics=document.getElementById("metrics"),phaseEl=document.getElementById("phase"),vibe=document.getElementById("vibe"),advice=document.getElementById("advice"),action=document.getElementById("action");
+
+</script>
+</body>
+</html>
